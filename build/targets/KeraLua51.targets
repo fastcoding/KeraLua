@@ -22,7 +22,7 @@
 
     <!-- get the preferred paths -->
     <PropertyGroup>
-        <PreferredWindowsNativeLuaPath>$(MSBuildThisFileDirectory)..\..\runtimes\win-$(PreferredNativeLua)\native\lua51.dll</PreferredWindowsNativeLuaPath>
+        <PreferredWindowsNativeLuaPath>$(MSBuildThisFileDirectory)..\..\runtimes\win-$(PreferredNativeLua)\native\liblua.dll</PreferredWindowsNativeLuaPath>
         <PreferredOSXNativeLuaPath>$(MSBuildThisFileDirectory)..\..\runtimes\osx\native\liblua51.dylib</PreferredOSXNativeLuaPath>
         <PreferredLinuxNativeLuaPath>$(MSBuildThisFileDirectory)..\..\runtimes\linux-$(PreferredNativeLua)\native\liblua51.so</PreferredLinuxNativeLuaPath>
     </PropertyGroup>
@@ -45,14 +45,14 @@
     <!-- a special case for Any CPU -->
     <ItemGroup Condition=" '$(ShouldIncludeNativeLua)' != 'False' and ( '$(PlatformTarget)' != 'x64' and '$(PlatformTarget)' != 'x86' ) ">
         <!-- Windows -->
-        <None Include="$(MSBuildThisFileDirectory)..\..\runtimes\win-x86\native\lua51.dll"
-              Condition="Exists('$(MSBuildThisFileDirectory)..\..\runtimes\win-x86\native\lua51.dll')">
-            <Link>x86\lua51.dll</Link>
+        <None Include="$(MSBuildThisFileDirectory)..\..\runtimes\win-x86\native\liblua.dll"
+              Condition="Exists('$(MSBuildThisFileDirectory)..\..\runtimes\win-x86\native\liblua.dll')">
+            <Link>x86\liblua.dll</Link>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Include="$(MSBuildThisFileDirectory)..\..\runtimes\win-x64\native\lua54.dll"
-              Condition="Exists('$(MSBuildThisFileDirectory)..\..\runtimes\win-x64\native\lua51.dll')">
-            <Link>x64\lua51.dll</Link>
+        <None Include="$(MSBuildThisFileDirectory)..\..\runtimes\win-x64\native\liblua.dll"
+              Condition="Exists('$(MSBuildThisFileDirectory)..\..\runtimes\win-x64\native\liblua.dll')">
+            <Link>x64\liblua.dll</Link>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <!-- Linux -->
