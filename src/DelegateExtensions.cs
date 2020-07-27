@@ -1,5 +1,8 @@
-﻿using System;
+﻿#define NETFRAMEWORK
+using System;
 using System.Runtime.InteropServices;
+
+
 
 namespace KeraLua
 {

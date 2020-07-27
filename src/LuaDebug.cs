@@ -1,4 +1,5 @@
-﻿using System;
+﻿#define NETFRAMEWORK
+using System;
 using System.Text;
 using System.Runtime.InteropServices;
 
