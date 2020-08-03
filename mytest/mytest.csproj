@@ -103,7 +103,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\external\luajit\win-x64\Release\liblua.dll">
+    <Content Include="..\external\luajit\win-x64\Release\lua.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

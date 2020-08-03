@@ -130,11 +130,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="liblua.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\..\build\net45\KeraLua51.csproj">
       <Project>{c45805a8-6436-4738-bd9f-4632eea63bbc}</Project>
       <Name>KeraLua51</Name>

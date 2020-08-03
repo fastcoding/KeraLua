@@ -2,6 +2,7 @@
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
+using Microsoft.Win32;
 
 namespace KeraLua
 {
@@ -518,8 +519,11 @@ namespace KeraLua
         /// <param name="index"></param>
         /// <param name="nth"></param>
         /// <returns>Returns the type of the pushed value. </returns>
-        public int GetIndexedUserValue(int index, int nth) => NativeMethods.lua_getiuservalue(_luaState, index, nth);
-
+        public int GetIndexedUserValue(int index, int nth)
+        {
+            //   NativeMethods.lua_getiuservalue(_luaState, index, nth);
+            throw new Exception("not implemented in 5.1");
+        }
         /// <summary>
         /// Compatibility GetIndexedUserValue with constant 1
         /// </summary>
@@ -556,13 +560,16 @@ namespace KeraLua
         /// </summary>
         public LuaHookMask HookMask => (LuaHookMask)NativeMethods.lua_gethookmask(_luaState);
 
-        /*
+
         /// <summary>
         /// Moves the top element into the given valid index, shifting up the elements above this index to open space. This function cannot be called with a pseudo-index, because a pseudo-index is not an actual stack position. 
         /// </summary>
         /// <param name="index"></param>        
-        public void Insert(int index) => NativeMethods.lua_rotate(_luaState, index, 1);
-       */
+        public void Insert(int index)
+        {
+            NativeMethods.lua_insert(_luaState, index);
+        }
+       
         /// <summary>
         /// Returns  if the value at the given index is a boolean
         /// </summary>
@@ -722,8 +729,8 @@ namespace KeraLua
         /// <returns></returns>
         public IntPtr NewIndexedUserData(int size, int uv)
         {
-            throw new Exception("Not implemented");
-            //return NativeMethods.lua_newuserdatauv(_luaState, (UIntPtr) size, uv);
+            //throw new Exception("Not implemented");
+            return NativeMethods.lua_newuserdata(_luaState, (UIntPtr) size);
         }
 
         /// <summary>
@@ -821,7 +828,16 @@ namespace KeraLua
         /// </summary>
         public void PushGlobalTable()
         {
-            NativeMethods.lua_rawgeti(_luaState, (int)LuaRegistry.Index, (int)LuaRegistryIndex.Globals);
+            //NativeMethods.lua_rawgeti(_luaState, (int)LuaRegistry.Index, (int)LuaRegistryIndex.Globals);
+            NativeMethods.lua_getglobal(_luaState, "getfenv");
+            NativeMethods.lua_pushinteger(_luaState,0);
+            if (NativeMethods.lua_pcall(_luaState, 1, 1, 0) != 0)
+            {
+                System.UIntPtr len;
+                IntPtr ptr=NativeMethods.lua_tolstring(_luaState, 1,out len);
+                NativeMethods.lua_settop(_luaState, -2);
+                throw new Exception(ptr!=null?Marshal.PtrToStringAnsi(ptr):"failed");
+            }            
         }
         /// <summary>
         /// Pushes an integer with value n onto the stack. 
@@ -1027,7 +1043,15 @@ namespace KeraLua
         {
             NativeMethods.lua_rawset(_luaState, (int)index);
         }
-
+        /// <summary>
+        /// setfenv
+        ///
+        /// </summary>
+        /// <param name="index">index of table</param>        
+        public void SetFEnv(int index)
+        {
+            NativeMethods.lua_setfenv(_luaState, index);
+        }
         /// <summary>
         ///  Does the equivalent of t[i] = v, where t is the table at the given index and v is the value at the top of the stack.
         ///  This function pops the value from the stack. The assignment is raw, that is, it does not invoke the __newindex metamethod. 
@@ -1036,7 +1060,15 @@ namespace KeraLua
         /// <param name="i">value</param>
         public void RawSetInteger(int index, long i)
         {
-            NativeMethods.lua_rawseti(_luaState, index, i);
+            if (index == NativeMethods.LUA_REGISTRYINDEX)
+            {
+                //NativeMethods.lua_pushvalue(_luaState, -1);//leave the stack intact
+               // NativeMethods.lua_setfenv(_luaState, 0); 
+            }
+            else
+            {
+                NativeMethods.lua_rawseti(_luaState, index, i);
+            }            
         }
 
         /// <summary>
@@ -1080,8 +1112,9 @@ namespace KeraLua
         /// <param name="index"></param>
         public void Remove(int index)
         {
-            Rotate(index, -1);
-            Pop(1);
+            //Rotate(index, -1);
+            NativeMethods.lua_remove(_luaState, index);
+            //Pop(1);
         }
 
         /// <summary>
