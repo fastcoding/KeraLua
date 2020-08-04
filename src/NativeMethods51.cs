@@ -262,7 +262,7 @@ namespace KeraLua
         internal static extern void lua_rawseti(lua_State luaState, int index, lua_Integer i);
         
         [DllImport(LuaLibraryName, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern void lua_setfenv(lua_State luaState, int index);
+        internal static extern int lua_setfenv(lua_State luaState, int index);
 
         [DllImport(LuaLibraryName, CallingConvention = CallingConvention.Cdecl)]
         internal static extern void lua_getfenv(lua_State luaState, int index);

@@ -83,7 +83,7 @@ namespace KeraLua
         byte[] shortSource;
      
         [MarshalAs(UnmanagedType.I4)]
-        int i_ci; /* (t) */
+        int i_ci; /* active frame */
 
         /// <summary>
         /// number of parameters

@@ -829,7 +829,8 @@ namespace KeraLua
         public void PushGlobalTable()
         {
             //NativeMethods.lua_rawgeti(_luaState, (int)LuaRegistry.Index, (int)LuaRegistryIndex.Globals);
-            NativeMethods.lua_getglobal(_luaState, "getfenv");
+            NativeMethods.lua_pushvalue(_luaState, NativeMethods.LUA_GLOBALSINDEX);
+            /*NativeMethods.lua_getglobal(_luaState, "getfenv");
             NativeMethods.lua_pushinteger(_luaState,0);
             if (NativeMethods.lua_pcall(_luaState, 1, 1, 0) != 0)
             {
@@ -837,7 +838,7 @@ namespace KeraLua
                 IntPtr ptr=NativeMethods.lua_tolstring(_luaState, 1,out len);
                 NativeMethods.lua_settop(_luaState, -2);
                 throw new Exception(ptr!=null?Marshal.PtrToStringAnsi(ptr):"failed");
-            }            
+            }*/
         }
         /// <summary>
         /// Pushes an integer with value n onto the stack. 
@@ -1045,12 +1046,12 @@ namespace KeraLua
         }
         /// <summary>
         /// setfenv
-        ///
+        /// 
         /// </summary>
-        /// <param name="index">index of table</param>        
-        public void SetFEnv(int index)
+        /// <param name="index">index of table to be set</param>        
+        public bool SetFEnv(int index)
         {
-            NativeMethods.lua_setfenv(_luaState, index);
+            return NativeMethods.lua_setfenv(_luaState, index)==1;
         }
         /// <summary>
         ///  Does the equivalent of t[i] = v, where t is the table at the given index and v is the value at the top of the stack.
